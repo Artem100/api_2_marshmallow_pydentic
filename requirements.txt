@@ -1,0 +1,11 @@
+pytest >= 6.1.1
+allure-pytest>= 2.8.40
+allure-python-commons>=2.8.40
+Faker == 8.2.0
+openpyxl == 3.0.7
+requests == 2.26.0
+python-dotenv == 0.19.2
+jsonpath-rw == 1.4.0
+jsonschema == 4.0.1
+mitmproxy
+requests_oauthlib
