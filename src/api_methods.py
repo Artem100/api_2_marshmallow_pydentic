@@ -27,6 +27,7 @@ from env_data import env_run
 
 main_url_api = env_run()
 
+# https://jsonplaceholder.typicode.com/
 
 def logging_request(url, response, data=None, request_json=None):
     request_body = ""
