@@ -21,3 +21,4 @@ def test_user_marsh(data):
     print(make_json)
     response = post_news(body=make_json)
     ResponseActions().status_code_check(response, expected_code=201)
+    # schema.load(response.json(), exclude_paths="root['id']")
