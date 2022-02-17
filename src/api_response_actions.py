@@ -4,13 +4,14 @@ import os
 
 import allure
 import jsonpath_rw
+from deepdiff import DeepDiff
+from marshmallow import ValidationError
 
 
 class ResponseActions(object):
     # https://jsonpath.com
     # https://goessner.net/articles/JsonPath/
     # https://jsonpath-rw.readthedocs.io/
-
 
     @allure.step
     def status_code_check(self, response, expected_code=200):
@@ -78,9 +79,19 @@ class ResponseActions(object):
             logging.error(f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value_list}'")
             assert False, f"\nKey [{json_path}] hasn't value: '{check_value}' \nIt's has value: '{value_list}'"
 
-    # @allure.step
-    # def validate_json_body(self, response_json, file_name_schema):
-    #     path_file = os.path.join((ROOT_DIR + file_name_schema))
-    #     with open(path_file) as f:
-    #         validate(instance=response_json.json(), schema=json.loads(f.read()))
+    @allure.step
+    def schema_json_validate(self, response, schema):
+        try:
+            try_validate_schema = schema
+            try_validate_schema.load(response.json())
+        except ValidationError as err:
+            logging.error(f"Shchema validation error: {err}")
+            assert False, f"Shchema validation error: {err}"
 
+    @allure.step
+    def validate_response_values_with_request(self, response, request_data, exclude_paths=None, ignore_order=True):
+        try:
+            DeepDiff(response.json(), request_data, ignore_order=ignore_order, exclude_paths=exclude_paths)
+        except ValidationError as err:
+            logging.error(f"Shchema validation error: {err}")
+            raise Exception(f"Shchema validation error: {err}")

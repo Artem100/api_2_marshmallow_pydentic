@@ -1,5 +1,5 @@
-from marshmallow import Schema, fields, post_load
-
+from marshmallow import Schema, fields, post_load, validates
+import logging
 from src.schemas.news_feed_model import NewsFeedModel
 
 
@@ -9,6 +9,17 @@ class NewsFeedSchema(Schema):
         body = fields.Str()
         userId = fields.Int()
 
-        # @post_load
-        # def make_news(self, data, **kwargs):
-        #     return NewsFeedModel(**data)
+class NewsFeedSchemaResponse(Schema):
+
+        id = fields.Int()
+        title = fields.Str()
+        body = fields.Str()
+        userId = fields.Int()
+
+        # @validates("body")
+        # def validate_quantity(self, value, **kwargs):
+        #         try:
+        #                 assert value == kwargs
+        #         except AssertionError as e:
+        #                 logging.error(f"Incorrect value:")
+        #                 assert False, f"Incorrect value:"
