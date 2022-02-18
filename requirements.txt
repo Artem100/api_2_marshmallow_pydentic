@@ -9,3 +9,4 @@ jsonpath-rw == 1.4.0
 jsonschema == 4.0.1
 mitmproxy
 requests_oauthlib
+pydantic

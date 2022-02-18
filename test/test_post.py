@@ -1,5 +1,7 @@
 from src.api_response_actions import ResponseActions
 from src.api_services.news_feeds import post_news, feed_json
+from src.models.news_feed import NewsFeedModel
+from src.schema.news_feed import NewsFeedRequest
 
 
 def test_03(data):
@@ -10,3 +12,10 @@ def test_03(data):
     ResponseActions().check_value_by_path(response, "body", data.body)
     ResponseActions().check_value_by_path(response, "userId", data.userId)
     ResponseActions().check_value_more_null(response, "id")
+
+def test_01_pydentic(data):
+    model = NewsFeedModel(title=data.title, body=data.body, userId=data.userId)
+    some_json = NewsFeedRequest.from_orm(model)
+    print(some_json.json())
+    response = post_news(some_json)
+    ResponseActions().status_code_check(response, expected_code=201)
