@@ -16,6 +16,5 @@ def test_03(data):
 def test_01_pydentic(data):
     model = NewsFeedModel(title=data.title, body=data.body, userId=data.userId)
     some_json = NewsFeedRequest.from_orm(model)
-    print(some_json.json())
-    response = post_news(some_json)
+    response = post_news(body=some_json)
     ResponseActions().status_code_check(response, expected_code=201)

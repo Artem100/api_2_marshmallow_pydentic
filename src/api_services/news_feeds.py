@@ -13,5 +13,5 @@ def feed_json(title=None, body=None, userId=None):
 
 @step
 def post_news(user=None, body=None):
-    response = post_method("posts", user_cookies=user, json=body)
+    response = post_method("posts", user_cookies=user, data=body)
     return response

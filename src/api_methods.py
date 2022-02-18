@@ -33,7 +33,7 @@ def logging_request(url, response, data=None, request_json=None):
     request_body = ""
     response_body = ""
     if data:
-        request_body = json.dumps(data, indent=4)
+        request_body = json.dumps(data.dict(), indent=4)
     elif request_json:
         request_body = json.dumps(request_json, indent=4)
     elif data == None and request_json == {}:
@@ -74,7 +74,7 @@ def get_method(url, user_cookies, headers=None, params=None, session=None):
     return response
 
 
-def post_method(url, user_cookies=None, headers=None, data=None, session=None, json=None):
+def post_method(url, user_cookies=None, headers=None, data=None, session=None):
     url_request = main_url_api + url
     logging.info(f'Make a POST request to {url_request}')
     if headers is None:
@@ -82,10 +82,10 @@ def post_method(url, user_cookies=None, headers=None, data=None, session=None, j
     if user_cookies != None:
         headers['Authorization'] = f"Bearer {user_cookies}"
     if session is None:
-        response = requests.post(url=url_request, headers=headers, data=data, json=json)
+        response = requests.post(url=url_request, headers=headers, data=data.dict())
     else:
-        response = session.post(url=url_request, headers=headers, data=data, json=json)
-    logging_request(url_request, response, data=data, request_json=json)
+        response = session.post(url=url_request, headers=headers, data=data.dict())
+    logging_request(url_request, response, data=data)
     return response
 
 
