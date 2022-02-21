@@ -88,7 +88,7 @@ class ResponseActions(object):
     @allure.step("Validate schema")
     def schema_validate(self, response, schema):
         try:
-            schema(**response.json)
+            schema(**response.json())
         except ValidationError as exc:
             logging.error(f"Json validation: {exc}")
 

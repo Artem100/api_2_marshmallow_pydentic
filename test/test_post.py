@@ -25,5 +25,5 @@ def test_01_pydentic(data):
         NewsFeedResponse(**response.json())
     except ValidationError as exc:
         print(exc)
-    ResponseActions().schema_validate(response, NewsFeedResponse())
+    ResponseActions().schema_validate(response, NewsFeedResponse)
 
