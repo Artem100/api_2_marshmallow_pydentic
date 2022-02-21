@@ -4,6 +4,7 @@ import os
 
 import allure
 import jsonpath_rw
+from pydantic import ValidationError
 
 
 class ResponseActions(object):
@@ -83,4 +84,11 @@ class ResponseActions(object):
     #     path_file = os.path.join((ROOT_DIR + file_name_schema))
     #     with open(path_file) as f:
     #         validate(instance=response_json.json(), schema=json.loads(f.read()))
+
+    @allure.step("Validate schema")
+    def schema_validate(self, response, schema):
+        try:
+            schema(**response.json)
+        except ValidationError as exc:
+            logging.error(f"Json validation: {exc}")
 

@@ -1,7 +1,9 @@
+from pydantic import ValidationError
+
 from src.api_response_actions import ResponseActions
 from src.api_services.news_feeds import post_news, feed_json
 from src.models.news_feed import NewsFeedModel
-from src.schema.news_feed import NewsFeedRequest
+from src.schema.news_feed import NewsFeedRequest, NewsFeedResponse
 
 
 def test_03(data):
@@ -18,3 +20,10 @@ def test_01_pydentic(data):
     some_json = NewsFeedRequest.from_orm(model)
     response = post_news(body=some_json)
     ResponseActions().status_code_check(response, expected_code=201)
+    # what_is = response.json()
+    try:
+        NewsFeedResponse(**response.json())
+    except ValidationError as exc:
+        print(exc)
+    ResponseActions().schema_validate(response, NewsFeedResponse())
+

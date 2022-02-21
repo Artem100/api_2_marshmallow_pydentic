@@ -14,3 +14,4 @@ class NewsFeedResponse(BaseModel):
     body: str
     userId: int
     id: int
+    id2: int
