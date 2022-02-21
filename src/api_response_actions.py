@@ -86,10 +86,11 @@ class ResponseActions(object):
     #         validate(instance=response_json.json(), schema=json.loads(f.read()))
 
     @allure.step("Validate schema")
-    def schema_validate(self, response, schema):
+    def schema_validate(self, response, schema, data_orm):
         try:
             # schema(**response.json())
             schema.parse_obj(response.json())
+            # schema(data_for_valid)
         except ValidationError as exc:
             logging.error(f"Json validation: {exc}")
 

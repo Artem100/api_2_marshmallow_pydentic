@@ -18,11 +18,11 @@ def test_03(data):
 def test_01_pydentic(data):
     model = NewsFeedModel(title=data.title, body=data.body, userId=data.userId)
     some_json = NewsFeedRequest.from_orm(model)
+
     response = post_news(body=some_json)
     ResponseActions().status_code_check(response, expected_code=201)
-    try:
-        NewsFeedResponse(**response.json())
-    except ValidationError as exc:
-        print(exc)
-    ResponseActions().schema_validate(response, NewsFeedResponse)
+    # ResponseActions().schema_validate(response, NewsFeedResponse)
+    NewsFeedResponse.parse_obj(response.json())
+    # NewsFeedResponse.from_orm
+
 

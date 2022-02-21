@@ -1,5 +1,5 @@
 from computer_example import *
-from pydantic import BaseModel, HttpUrl, UUID4, EmailStr
+from pydantic import BaseModel, HttpUrl, UUID4, EmailStr, ValidationError
 from pydantic.types import  PastDate, FutureDate, List, PaymentCardNumber
 from pydantic.networks import IPv4Address, IPv6Address
 from pydantic.color import Color
@@ -32,5 +32,8 @@ class Computer(BaseModel):
      host_v6: IPv6Address # ip v6
      detailed_info: DetailedInfo
 
-comp = Computer.parse_obj(computer)
-print(comp)
+try:
+    comp = Computer.parse_obj(computer)
+    print(comp)
+except ValidationError as e:
+    print(e)
