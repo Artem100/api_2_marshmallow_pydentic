@@ -10,3 +10,4 @@ jsonschema == 4.0.1
 mitmproxy
 requests_oauthlib
 pydantic
+email-validator
