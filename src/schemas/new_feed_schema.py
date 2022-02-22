@@ -4,7 +4,7 @@ from src.schemas.news_feed_model import NewsFeedModel
 
 
 class NewsFeedSchema(Schema):
-
+        id = fields.Int()
         title = fields.Str()
         body = fields.Str()
         userId = fields.Int()
