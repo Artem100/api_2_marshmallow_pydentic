@@ -1,3 +1,4 @@
+import jsonpath_rw
 from pydantic import ValidationError
 
 from src.api_response_actions import ResponseActions
@@ -20,9 +21,12 @@ def test_01_pydentic(data):
     some_json = NewsFeedRequest.from_orm(model)
 
     response = post_news(body=some_json)
+    # model.id = jsonpath_rw.parse("id").find(response.json())[0].value
     ResponseActions().status_code_check(response, expected_code=201)
-    # ResponseActions().schema_validate(response, NewsFeedResponse)
-    NewsFeedResponse.parse_obj(response.json())
-    # NewsFeedResponse.from_orm
+    ResponseActions().schema_validate(response, NewsFeedResponse)
+    # Задать, что проверка или заполение поля ID не обязательно и не добавлять его в тело запроса
+    request_data = NewsFeedResponse.from_orm(model)
+    print(request_data.json())
+    # ResponseActions.validate_data_response_values_with_request
 
 

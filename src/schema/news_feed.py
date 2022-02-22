@@ -1,4 +1,5 @@
 from pydantic import BaseModel, validator
+from pydantic.types import Optional
 
 
 class NewsFeedRequest(BaseModel):
@@ -13,7 +14,7 @@ class NewsFeedResponse(BaseModel):
     title: str
     body: str
     userId: int
-    id: int
+    id: Optional[int]
     # id2: int
 
     class Config:

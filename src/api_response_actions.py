@@ -4,6 +4,7 @@ import os
 
 import allure
 import jsonpath_rw
+from deepdiff import DeepDiff
 from pydantic import ValidationError
 
 
@@ -86,11 +87,18 @@ class ResponseActions(object):
     #         validate(instance=response_json.json(), schema=json.loads(f.read()))
 
     @allure.step("Validate schema")
-    def schema_validate(self, response, schema, data_orm):
+    def schema_validate(self, response, schema):
         try:
-            # schema(**response.json())
             schema.parse_obj(response.json())
-            # schema(data_for_valid)
         except ValidationError as exc:
             logging.error(f"Json validation: {exc}")
 
+    @allure.step
+    def validate_data_response_values_with_request(self, response, request_data, exclude_paths=None, ignore_order=True):
+        try:
+            DeepDiff(response.json(), request_data, ignore_order=ignore_order, exclude_paths=exclude_paths)
+        except ValidationError as err:
+            logging.error(f"Shchema validation error: {err}")
+            raise Exception(f"Shchema validation error: {err}")
+
+    # Add get value method

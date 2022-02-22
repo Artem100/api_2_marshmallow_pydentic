@@ -11,3 +11,4 @@ mitmproxy
 requests_oauthlib
 pydantic
 email-validator
+deepdiff
