@@ -1,7 +1,4 @@
-import jsonpath_rw
-from pydantic import ValidationError
-
-from src.api_response_actions import ResponseActions
+from src.actions.api_response_actions import ResponseActions
 from src.api_services.news_feeds import post_news, feed_json
 from src.models.news_feed import NewsFeedModel
 from src.schema.news_feed import NewsFeedRequest, NewsFeedResponse

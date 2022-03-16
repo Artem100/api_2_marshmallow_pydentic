@@ -1,6 +1,6 @@
 from allure_commons._allure import step
 
-from src.api_methods import post_method
+from src.actions.api_methods import post_method
 
 
 def feed_json(title=None, body=None, userId=None):
