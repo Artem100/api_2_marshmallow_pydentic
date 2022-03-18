@@ -91,14 +91,41 @@ class ResponseActions(object):
         try:
             schema.parse_obj(response.json())
         except ValidationError as exc:
-            logging.error(f"Json validation: {exc}")
+            logging.error(f"Json validation:\n{exc}")
+            raise Exception(f"Json validation:\n{exc}")
 
     @allure.step
-    def validate_data_response_values_with_request(self, response, request_data, exclude_paths=None, ignore_order=True):
+    def validate_data_response(self, response, request_data, expected_code=None, schema=None, exclude_paths=None, ignore_order=True):
+        logging.info(f"Check status is code: {expected_code}")
         try:
-            DeepDiff(response.json(), request_data, ignore_order=ignore_order, exclude_paths=exclude_paths)
-        except ValidationError as err:
-            logging.error(f"Shchema validation error: {err}")
-            raise Exception(f"Shchema validation error: {err}")
+            if expected_code == None:
+                assert response.status_code in (200, 201)
+            else:
+                assert response.status_code == expected_code
+        except AssertionError:
+            logging.error(f"Incorrect status code. \nExpected value: {expected_code},\nActual value: {response.status_code}")
+            raise AssertionError(f"Incorrect status code. \nExpected value: {expected_code},\nActual value: {response.status_code}")
 
-    # Add get value method
+        logging.info(f"Check json schema is code: {expected_code}")
+        validation_schema = ""
+        if schema != None:
+            try:
+                logging.info(f"Check json schema of json")
+                validation_schema = schema.parse_raw(response.text)
+            except ValidationError as exc:
+                logging.error(f"Json validation:\n{exc}")
+                raise Exception(f"Json validation:\n{exc}")
+
+        logging.info(f"Assert data at response json: {expected_code}")
+        # res = response.json()
+        # req = request_data.dict()
+        # assertion_body = validation_schema.dict()
+        result = DeepDiff(validation_schema.dict(), request_data.dict(), ignore_order=ignore_order, exclude_paths=exclude_paths)
+        if result:
+            logging.error(f"Assertion error: {result}")
+            raise Exception(f"Assertion error: {result}")
+
+    @allure.step
+    def get_value_by_easy_jsonpath(self, json_body, path):
+        value = jsonpath_rw.parse(path).find(json_body.json())[0].value
+        return value

@@ -6,6 +6,7 @@ class NewsFeedRequest(BaseModel):
     title: str
     body: str
     userId: int
+    # id: Optional[int]
 
     class Config:
         orm_mode = True
@@ -15,9 +16,8 @@ class NewsFeedResponse(BaseModel):
     body: str
     userId: int
     id: Optional[int]
-    # id2: int
 
     class Config:
         orm_mode = True
-        validate_all = True
+        # validate_all = True
 

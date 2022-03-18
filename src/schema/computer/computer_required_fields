@@ -1,0 +1,9 @@
+computer = {
+    "id": 21,
+    "status": "ACTIVE",
+    "activated_at": "2013-06-01",
+    "expiration_at": "2040-06-01",
+    "host_v4": "91.192.222.17",
+    "host_v6": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+    "detailed_info": {}
+}
